@@ -133,6 +133,8 @@ function transformRequestData (request) {
     let url = '';
     if (urlObj.protocol) {
       url += urlObj.protocol;
+    } else {
+      url += "http"
     }
     if (urlObj.host) {
       // let host = urlObj.host.slice(0, -1);
@@ -147,7 +149,7 @@ function transformRequestData (request) {
         url += `/${urlObj.path}`;
       }
       if (urlObj.path.constructor === Array) {
-        // do something
+        url += "/" + urlObj.path.join('/');
       }
     }
     if (urlObj.query && urlObj.query.length > 0) {
@@ -498,7 +500,7 @@ function gatling (items) {
 
     // handle raw body
     let body = request.body;
-    if (body && body instanceof String) {
+    if (body && typeof(body) === "string") {
       // align the body.
       body = body.replace(/\n\t/g, '\n').replace(/\n/g, "\n\t\t").replace(/{{(.*?)}}/g, '$($1)');
       let gatlingBody = `.body(StringBody("""${body}""")).asJSON`;
