@@ -138,7 +138,9 @@ function transformRequestData (request) {
     }
     if (urlObj.host) {
       // let host = urlObj.host.slice(0, -1);
-      let host = urlObj.host.replace(/\.$/, '');
+      let objHost = urlObj.host;
+      let hostStr = objHost.constructor === Array ? objHost.join(".") : objHost;
+      let host = hostStr.replace(/\.$/, '');
       url += `://${host}`;
     }
     if (urlObj.port) {
